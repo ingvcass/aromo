@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище shopModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="cathegories">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="100ml" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="50ml" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="other" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="deliveries">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="adress" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="middle">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="otderid" Type="int" Nullable="false" />
+          <Property Name="prodid" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="orders">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="userid" Type="int" Nullable="false" />
+          <Property Name="count" Type="float" Nullable="false" />
+          <Property Name="delivid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="products">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="high" Type="nvarchar" MaxLength="50" />
+          <Property Name="middle" Type="nvarchar" MaxLength="50" />
+          <Property Name="low" Type="nvarchar" MaxLength="50" />
+          <Property Name="price" Type="float" Nullable="false" />
+          <Property Name="cathid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_middle_order">
+          <End Role="orders" Type="Self.orders" Multiplicity="1" />
+          <End Role="middle" Type="Self.middle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="orders">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="middle">
+              <PropertyRef Name="otderid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_middle_products">
+          <End Role="products" Type="Self.products" Multiplicity="1" />
+          <End Role="middle" Type="Self.middle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="middle">
+              <PropertyRef Name="prodid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_delivery">
+          <End Role="deliveries" Type="Self.deliveries" Multiplicity="1" />
+          <End Role="orders" Type="Self.orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="deliveries">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="orders">
+              <PropertyRef Name="delivid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="orders" Type="Self.orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="orders">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_products_cathegories">
+          <End Role="cathegories" Type="Self.cathegories" Multiplicity="1" />
+          <End Role="products" Type="Self.products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cathegories">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="cathid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище shopModelContainer">
+          <EntitySet Name="cathegories" EntityType="Self.cathegories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="deliveries" EntityType="Self.deliveries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="middle" EntityType="Self.middle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="orders" EntityType="Self.orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="products" EntityType="Self.products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_middle_order" Association="Self.FK_middle_order">
+            <End Role="orders" EntitySet="orders" />
+            <End Role="middle" EntitySet="middle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_middle_products" Association="Self.FK_middle_products">
+            <End Role="products" EntitySet="products" />
+            <End Role="middle" EntitySet="middle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_delivery" Association="Self.FK_order_delivery">
+            <End Role="deliveries" EntitySet="deliveries" />
+            <End Role="orders" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_users" Association="Self.FK_order_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="orders" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_products_cathegories" Association="Self.FK_products_cathegories">
+            <End Role="cathegories" EntitySet="cathegories" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="shopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="cathegories">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="C100ml" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="C50ml" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="other" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="products" Relationship="Self.FK_products_cathegories" FromRole="cathegories" ToRole="products" />
+        </EntityType>
+        <EntityType Name="deliveries">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="adress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="orders" Relationship="Self.FK_order_delivery" FromRole="deliveries" ToRole="orders" />
+        </EntityType>
+        <EntityType Name="middle">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="otderid" Type="Int32" Nullable="false" />
+          <Property Name="prodid" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="orders" Relationship="Self.FK_middle_order" FromRole="middle" ToRole="orders" />
+          <NavigationProperty Name="products" Relationship="Self.FK_middle_products" FromRole="middle" ToRole="products" />
+        </EntityType>
+        <EntityType Name="orders">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="userid" Type="Int32" Nullable="false" />
+          <Property Name="count" Type="Double" Nullable="false" />
+          <Property Name="delivid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="deliveries" Relationship="Self.FK_order_delivery" FromRole="orders" ToRole="deliveries" />
+          <NavigationProperty Name="middle" Relationship="Self.FK_middle_order" FromRole="orders" ToRole="middle" />
+          <NavigationProperty Name="users" Relationship="Self.FK_order_users" FromRole="orders" ToRole="users" />
+        </EntityType>
+        <EntityType Name="products">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="high" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="middle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="low" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="price" Type="Double" Nullable="false" />
+          <Property Name="cathid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="cathegories" Relationship="Self.FK_products_cathegories" FromRole="products" ToRole="cathegories" />
+          <NavigationProperty Name="middle1" Relationship="Self.FK_middle_products" FromRole="products" ToRole="middle" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="orders" Relationship="Self.FK_order_users" FromRole="users" ToRole="orders" />
+        </EntityType>
+        <Association Name="FK_products_cathegories">
+          <End Role="cathegories" Type="Self.cathegories" Multiplicity="1" />
+          <End Role="products" Type="Self.products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cathegories">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="cathid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_delivery">
+          <End Role="deliveries" Type="Self.deliveries" Multiplicity="1" />
+          <End Role="orders" Type="Self.orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="deliveries">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="orders">
+              <PropertyRef Name="delivid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_middle_order">
+          <End Role="orders" Type="Self.orders" Multiplicity="1" />
+          <End Role="middle" Type="Self.middle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="orders">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="middle">
+              <PropertyRef Name="otderid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_middle_products">
+          <End Role="products" Type="Self.products" Multiplicity="1" />
+          <End Role="middle" Type="Self.middle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="middle">
+              <PropertyRef Name="prodid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="orders" Type="Self.orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="orders">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="shop" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="cathegories" EntityType="Self.cathegories" />
+          <EntitySet Name="deliveries" EntityType="Self.deliveries" />
+          <EntitySet Name="middle" EntityType="Self.middle" />
+          <EntitySet Name="orders" EntityType="Self.orders" />
+          <EntitySet Name="products" EntityType="Self.products" />
+          <EntitySet Name="users" EntityType="Self.users" />
+          <AssociationSet Name="FK_products_cathegories" Association="Self.FK_products_cathegories">
+            <End Role="cathegories" EntitySet="cathegories" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_delivery" Association="Self.FK_order_delivery">
+            <End Role="deliveries" EntitySet="deliveries" />
+            <End Role="orders" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_middle_order" Association="Self.FK_middle_order">
+            <End Role="orders" EntitySet="orders" />
+            <End Role="middle" EntitySet="middle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_middle_products" Association="Self.FK_middle_products">
+            <End Role="products" EntitySet="products" />
+            <End Role="middle" EntitySet="middle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_users" Association="Self.FK_order_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="orders" EntitySet="orders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище shopModelContainer" CdmEntityContainer="shop">
+          <EntitySetMapping Name="cathegories">
+            <EntityTypeMapping TypeName="shopModel.cathegories">
+              <MappingFragment StoreEntitySet="cathegories">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="C100ml" ColumnName="100ml" />
+                <ScalarProperty Name="C50ml" ColumnName="50ml" />
+                <ScalarProperty Name="other" ColumnName="other" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="deliveries">
+            <EntityTypeMapping TypeName="shopModel.deliveries">
+              <MappingFragment StoreEntitySet="deliveries">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="adress" ColumnName="adress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="middle">
+            <EntityTypeMapping TypeName="shopModel.middle">
+              <MappingFragment StoreEntitySet="middle">
+                <ScalarProperty Name="otderid" ColumnName="otderid" />
+                <ScalarProperty Name="prodid" ColumnName="prodid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="orders">
+            <EntityTypeMapping TypeName="shopModel.orders">
+              <MappingFragment StoreEntitySet="orders">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="count" ColumnName="count" />
+                <ScalarProperty Name="delivid" ColumnName="delivid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="products">
+            <EntityTypeMapping TypeName="shopModel.products">
+              <MappingFragment StoreEntitySet="products">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="high" ColumnName="high" />
+                <ScalarProperty Name="middle" ColumnName="middle" />
+                <ScalarProperty Name="low" ColumnName="low" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="cathid" ColumnName="cathid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="shopModel.users">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
